@@ -202,7 +202,7 @@ export default function UserProfile() {
             </div>
             {user.dietary_preferences && user.dietary_preferences.length > 0 ? (
               <div className="flex flex-wrap gap-2">
-                {JSON.parse(user.dietary_preferences).map((pref, i) => (
+                {(Array.isArray(user.dietary_preferences) ? user.dietary_preferences : JSON.parse(user.dietary_preferences)).map((pref, i) => (
                   <span key={i} className="px-3 py-1 bg-[#2a2a2a] border border-[#ffffff0a] text-gray-300 rounded-full text-sm font-medium">{pref}</span>
                 ))}
               </div>

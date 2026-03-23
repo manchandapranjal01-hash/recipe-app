@@ -10,8 +10,10 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 4000,
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
+  ssl: process.env.DB_HOST && process.env.DB_HOST !== 'localhost' ? { rejectUnauthorized: true } : false,
 });
 
 async function initDB() {
