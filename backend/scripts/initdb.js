@@ -56,6 +56,7 @@ async function initDB() {
         nutrition_info JSON,
         author_id INT,
         is_approved BOOLEAN DEFAULT FALSE,
+        status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (author_id) REFERENCES Users(id) ON DELETE SET NULL
       )
@@ -67,7 +68,10 @@ async function initDB() {
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL UNIQUE,
         category VARCHAR(100),
-        unit VARCHAR(50)
+        unit VARCHAR(50),
+        is_approved BOOLEAN DEFAULT TRUE,
+        requested_by INT DEFAULT NULL,
+        FOREIGN KEY (requested_by) REFERENCES Users(id) ON DELETE SET NULL
       )
     `);
 
@@ -138,6 +142,19 @@ async function initDB() {
       )
     `);
 
+    // SavedRecipes (bookmarks)
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS SavedRecipes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        recipe_id INT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE KEY user_recipe (user_id, recipe_id),
+        FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
+        FOREIGN KEY (recipe_id) REFERENCES Recipes(id) ON DELETE CASCADE
+      )
+    `);
+
     console.log("Schema created.");
 
     // === SEED DATA ===
@@ -174,36 +191,36 @@ async function initDB() {
     `);
 
     // Recipes (6 full recipes)
-    await pool.query(`INSERT INTO Recipes (title, category, description, prep_time, difficulty, image_url, cultural_origin, servings, instructions, nutrition_info, author_id, is_approved) VALUES
+    await pool.query(`INSERT INTO Recipes (title, category, description, prep_time, difficulty, image_url, cultural_origin, servings, instructions, nutrition_info, author_id, is_approved, status) VALUES
       ('Butter Chicken', 'Non-Veg', 'Creamy, rich tomato-based curry with tender chicken pieces. A North Indian classic loved worldwide.', 45, 'Medium',
        'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600', 'North Indian', 4,
        'Step 1: Marinate chicken with yogurt, turmeric, red chili, and salt for 30 minutes.\\nStep 2: Heat butter in a pan, add onions and sauté until golden.\\nStep 3: Add ginger-garlic paste and cook for 2 minutes.\\nStep 4: Add tomato puree, garam masala, and cook until oil separates.\\nStep 5: Add marinated chicken and cook for 15 minutes.\\nStep 6: Stir in cream, simmer for 5 minutes. Garnish with coriander.',
-       '{"calories": "490", "protein": "32g", "carbs": "18g", "fats": "34g"}', 1, true),
+       '{"calories": "490", "protein": "32g", "carbs": "18g", "fats": "34g"}', 1, true, 'approved'),
 
       ('Paneer Tikka Masala', 'Vegetarian', 'Smoky grilled paneer cubes in a rich, spiced tomato gravy. Perfect with naan or rice.', 35, 'Easy',
        'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600', 'North Indian', 3,
        'Step 1: Cut paneer into cubes, marinate with yogurt and spices for 20 minutes.\\nStep 2: Grill or pan-fry paneer until charred on edges.\\nStep 3: In a separate pan, sauté onions, tomatoes, ginger-garlic paste.\\nStep 4: Blend into smooth gravy, add garam masala and cream.\\nStep 5: Add grilled paneer cubes to the gravy.\\nStep 6: Simmer for 5 minutes, garnish with kasuri methi.',
-       '{"calories": "380", "protein": "22g", "carbs": "15g", "fats": "26g"}', 1, true),
+       '{"calories": "380", "protein": "22g", "carbs": "15g", "fats": "26g"}', 1, true, 'approved'),
 
       ('Chicken Biryani', 'Non-Veg', 'Fragrant layered rice with spiced chicken, saffron, and caramelized onions. The king of rice dishes.', 90, 'Hard',
        'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600', 'Hyderabadi', 6,
        'Step 1: Marinate chicken with yogurt, biryani masala, ginger-garlic paste for 1 hour.\\nStep 2: Soak basmati rice for 30 minutes, then parboil with whole spices.\\nStep 3: Fry onions until deep golden brown for crispy birista.\\nStep 4: Layer marinated chicken at the bottom of a heavy pot.\\nStep 5: Add rice on top, sprinkle saffron milk and fried onions.\\nStep 6: Seal with dough (dum), cook on low heat for 25 minutes.',
-       '{"calories": "650", "protein": "35g", "carbs": "72g", "fats": "22g"}', 1, true),
+       '{"calories": "650", "protein": "35g", "carbs": "72g", "fats": "22g"}', 1, true, 'approved'),
 
       ('Dal Tadka', 'Vegetarian', 'Comfort food at its best — yellow lentils tempered with ghee, cumin, garlic, and dried red chilies.', 30, 'Easy',
        'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600', 'North Indian', 4,
        'Step 1: Wash and pressure cook toor dal with turmeric and salt for 3 whistles.\\nStep 2: Mash the dal and adjust consistency with water.\\nStep 3: Heat ghee in a small pan for tadka.\\nStep 4: Add cumin seeds, mustard seeds, dried red chilies, garlic.\\nStep 5: Add chopped tomatoes and cook until soft.\\nStep 6: Pour the tadka over the dal, mix and garnish with coriander.',
-       '{"calories": "220", "protein": "14g", "carbs": "32g", "fats": "6g"}', 1, true),
+       '{"calories": "220", "protein": "14g", "carbs": "32g", "fats": "6g"}', 1, true, 'approved'),
 
       ('Masala Dosa', 'Vegetarian', 'Crispy golden crepe made from fermented rice and lentil batter, stuffed with spiced potato filling.', 40, 'Medium',
        'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600', 'South Indian', 2,
        'Step 1: Soak rice and urad dal separately for 6 hours, grind to smooth batter.\\nStep 2: Ferment overnight until batter doubles in size.\\nStep 3: For filling: boil potatoes, sauté with mustard seeds, turmeric, onions, green chilies.\\nStep 4: Heat a flat griddle (tawa), pour batter in circular motion.\\nStep 5: Drizzle oil, cook until golden and crispy.\\nStep 6: Place potato filling in center, fold dosa. Serve with sambar and chutney.',
-       '{"calories": "300", "protein": "8g", "carbs": "48g", "fats": "10g"}', 1, true),
+       '{"calories": "300", "protein": "8g", "carbs": "48g", "fats": "10g"}', 1, true, 'approved'),
 
       ('Chole Bhature', 'Vegetarian', 'Spiced chickpea curry served with fluffy deep-fried bread. A beloved Punjabi street food classic.', 60, 'Medium',
        'https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=600', 'Punjabi', 4,
        'Step 1: Soak chickpeas overnight, pressure cook until tender.\\nStep 2: Prepare the masala: fry onions, add ginger-garlic, tomatoes, and spices.\\nStep 3: Add cooked chickpeas with their water, simmer for 20 minutes.\\nStep 4: For bhature: mix maida, yogurt, salt, sugar, and oil into dough.\\nStep 5: Rest dough for 2 hours, then roll into ovals.\\nStep 6: Deep fry bhature until puffed and golden. Serve with pickled onions.',
-       '{"calories": "550", "protein": "18g", "carbs": "65g", "fats": "24g"}', 1, true)
+       '{"calories": "550", "protein": "18g", "carbs": "65g", "fats": "24g"}', 1, true, 'approved')
     `);
 
     // RecipeIngredients mapping

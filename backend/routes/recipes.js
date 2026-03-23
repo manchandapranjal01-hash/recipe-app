@@ -123,12 +123,13 @@ router.post('/recommendations', async (req, res) => {
 router.post('/', verifyToken, async (req, res) => {
     const { title, category, description, prep_time, difficulty, image_url, video_link, cultural_origin, servings, instructions, nutrition_info } = req.body;
     try {
-        // If admin is creating, aut-approve. Otherwise needs approval.
+        // If admin is creating, auto-approve. Otherwise needs approval.
         const isApproved = req.user.role === 'admin';
+        const status = isApproved ? 'approved' : 'pending';
         const [result] = await pool.query(
-            `INSERT INTO Recipes (title, category, description, prep_time, difficulty, image_url, video_link, cultural_origin, servings, instructions, nutrition_info, author_id, is_approved) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [title, category, description, prep_time, difficulty, image_url, video_link, cultural_origin, servings, instructions, JSON.stringify(nutrition_info), req.user.id, isApproved]
+            `INSERT INTO Recipes (title, category, description, prep_time, difficulty, image_url, video_link, cultural_origin, servings, instructions, nutrition_info, author_id, is_approved, status) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [title, category, description, prep_time, difficulty, image_url, video_link, cultural_origin, servings, instructions, JSON.stringify(nutrition_info), req.user.id, isApproved, status]
         );
         res.status(201).json({ id: result.insertId, message: "Recipe created" });
     } catch (e) {
