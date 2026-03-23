@@ -136,41 +136,6 @@ router.post('/', verifyToken, async (req, res) => {
     }
 });
 
-// Get single recipe with ingredients
-router.get('/:id', async (req, res) => {
-    try {
-        const [recipe] = await pool.query('SELECT * FROM Recipes WHERE id = ?', [req.params.id]);
-        if (recipe.length === 0) return res.status(404).json({ message: 'Recipe not found' });
 
-        const [ingredients] = await pool.query(`
-      SELECT i.id, i.name, i.unit, ri.quantity 
-      FROM RecipeIngredients ri 
-      JOIN Ingredients i ON ri.ingredient_id = i.id 
-      WHERE ri.recipe_id = ?
-    `, [req.params.id]);
-
-        res.json({ ...recipe[0], ingredients });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-// Get single recipe with ingredients
-router.get('/:id', async (req, res) => {
-    try {
-        const [recipe] = await pool.query('SELECT * FROM Recipes WHERE id = ?', [req.params.id]);
-        if (recipe.length === 0) return res.status(404).json({ message: 'Recipe not found' });
-
-        const [ingredients] = await pool.query(`
-      SELECT i.id, i.name, i.unit, ri.quantity 
-      FROM RecipeIngredients ri 
-      JOIN Ingredients i ON ri.ingredient_id = i.id 
-      WHERE ri.recipe_id = ?
-    `, [req.params.id]);
-
-        res.json({ ...recipe[0], ingredients });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
 
 export default router;

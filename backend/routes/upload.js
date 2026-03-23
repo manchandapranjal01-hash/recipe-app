@@ -43,7 +43,8 @@ router.post('/', upload.single('image'), (req, res) => {
         if (!req.file) {
             return res.status(400).json({ error: 'No image uploaded' });
         }
-        res.json({ imageUrl: `http://localhost:5000/uploads/${req.file.filename}` });
+        const baseUrl = process.env.UPLOAD_BASE_URL || `http://localhost:${process.env.PORT || 5000}`;
+        res.json({ imageUrl: `${baseUrl}/uploads/${req.file.filename}` });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

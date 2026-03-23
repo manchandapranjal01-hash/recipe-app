@@ -5,7 +5,8 @@ export const verifyToken = (req, res, next) => {
     if (!token) return res.status(401).json({ message: 'Access Denied. No token provided.' });
 
     try {
-        const secret = process.env.JWT_SECRET || 'fallback_secret';
+        const secret = process.env.JWT_SECRET;
+        if (!secret) return res.status(500).json({ message: 'Server configuration error.' });
         const decoded = jwt.verify(token, secret);
         req.user = decoded; // { id, role }
         next();
