@@ -11,7 +11,7 @@ export default function DiscoverRecommend() {
     useEffect(() => {
         const fetchIngredients = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/recipes/ingredients');
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/ingredients`);
                 const data = await res.json();
                 setIngredients(Array.isArray(data) ? data : []);
             } catch (err) {
@@ -32,7 +32,7 @@ export default function DiscoverRecommend() {
         setLoading(true);
         const idsToUse = ingredientsOverride !== null ? ingredientsOverride : selectedIds;
         try {
-            const res = await fetch('http://localhost:5000/api/recipes/recommendations', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/recommendations`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

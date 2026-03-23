@@ -30,7 +30,7 @@ export default function ManageGroceryStores() {
 
   const fetchStores = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/stores', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stores`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -49,7 +49,7 @@ export default function ManageGroceryStores() {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this store?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/stores/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stores/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -64,7 +64,7 @@ export default function ManageGroceryStores() {
       return;
     }
     try {
-      const res = await fetch('http://localhost:5000/api/admin/stores', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/stores`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(formData)

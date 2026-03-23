@@ -13,10 +13,10 @@ export default function AdminDashboard() {
       try {
         const headers = { Authorization: `Bearer ${token}` };
         const [usersRes, recipesRes, storesRes, ingsRes] = await Promise.all([
-          fetch('http://localhost:5000/api/admin/users', { headers }),
-          fetch('http://localhost:5000/api/admin/recipes', { headers }),
-          fetch('http://localhost:5000/api/admin/stores', { headers }),
-          fetch('http://localhost:5000/api/admin/ingredients', { headers })
+          fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, { headers }),
+          fetch(`${import.meta.env.VITE_API_URL}/api/admin/recipes`, { headers }),
+          fetch(`${import.meta.env.VITE_API_URL}/api/admin/stores`, { headers }),
+          fetch(`${import.meta.env.VITE_API_URL}/api/admin/ingredients`, { headers })
         ]);
 
         const users = await usersRes.json();

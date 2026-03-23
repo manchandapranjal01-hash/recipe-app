@@ -17,15 +17,15 @@ export default function UserProfile() {
         const headers = { Authorization: `Bearer ${token}` };
 
         // Fetch User's Recipes
-        const resRecipes = await fetch('http://localhost:5000/api/recipes/my-recipes', { headers });
+        const resRecipes = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/my-recipes`, { headers });
         if (resRecipes.ok) setMyRecipes(await resRecipes.json());
 
         // Fetch Saved Recipes
-        const resSaved = await fetch('http://localhost:5000/api/recipes/my-bookmarks', { headers });
+        const resSaved = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/my-bookmarks`, { headers });
         if (resSaved.ok) setSavedRecipes(await resSaved.json());
 
         // Fetch Ingredient Requests
-        const resReqs = await fetch('http://localhost:5000/api/ingredients/my-requests', { headers });
+        const resReqs = await fetch(`${import.meta.env.VITE_API_URL}/api/ingredients/my-requests`, { headers });
         if (resReqs.ok) setIngredientRequests(await resReqs.json());
 
       } catch (err) {
@@ -44,7 +44,7 @@ export default function UserProfile() {
     e.preventDefault();
     if (!newIngredient.name.trim()) return;
     try {
-      const res = await fetch('http://localhost:5000/api/ingredients/request', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/ingredients/request`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(newIngredient)
@@ -53,7 +53,7 @@ export default function UserProfile() {
         setShowPantryModal(false);
         setNewIngredient({ name: '', category: 'Vegetables', unit: 'g' });
         // Refetch requests
-        const resReqs = await fetch('http://localhost:5000/api/ingredients/my-requests', { headers: { Authorization: `Bearer ${token}` } });
+        const resReqs = await fetch(`${import.meta.env.VITE_API_URL}/api/ingredients/my-requests`, { headers: { Authorization: `Bearer ${token}` } });
         if (resReqs.ok) setIngredientRequests(await resReqs.json());
       }
     } catch (err) {

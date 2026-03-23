@@ -21,7 +21,7 @@ export default function AddNewRecipe() {
     const data = new FormData();
     data.append('image', file);
     try {
-      const res = await fetch('http://localhost:5000/api/upload', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: data
@@ -41,7 +41,7 @@ export default function AddNewRecipe() {
         ...formData,
         nutrition_info: JSON.stringify(nutrition)
       };
-      const res = await fetch('http://localhost:5000/api/recipes', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

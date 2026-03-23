@@ -8,7 +8,7 @@ export default function ManageRecipes() {
 
   const fetchRecipes = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/recipes', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/recipes`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -26,7 +26,7 @@ export default function ManageRecipes() {
 
   const handleStatus = async (id, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/recipes/${id}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/recipes/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status: newStatus })
@@ -42,7 +42,7 @@ export default function ManageRecipes() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this recipe?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/recipes/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/recipes/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

@@ -21,13 +21,13 @@ export default function RecipeDetailText() {
   const handleBookmark = async () => {
     try {
       if (isBookmarked) {
-        await fetch(`http://localhost:5000/api/recipes/${id}/bookmark`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/${id}/bookmark`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         setIsBookmarked(false);
       } else {
-        await fetch(`http://localhost:5000/api/recipes/${id}/bookmark`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/${id}/bookmark`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
@@ -42,8 +42,8 @@ export default function RecipeDetailText() {
     const fetchAll = async () => {
       try {
         const [recRes, revRes] = await Promise.all([
-          fetch(`http://localhost:5000/api/recipes/${id}`),
-          fetch(`http://localhost:5000/api/reviews/recipe/${id}`)
+          fetch(`${import.meta.env.VITE_API_URL}/api/recipes/${id}`),
+          fetch(`${import.meta.env.VITE_API_URL}/api/reviews/recipe/${id}`)
         ]);
         if (recRes.ok) setRecipe(await recRes.json());
         if (revRes.ok) setReviewsData(await revRes.json());
@@ -59,7 +59,7 @@ export default function RecipeDetailText() {
   const handlePostReply = async (reviewId) => {
     if (!replyText.trim()) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/reviews/${reviewId}/replies`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${reviewId}/replies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export default function RecipeDetailText() {
       if (res.ok) {
         alert('Reply posted!');
         // Ideally reload just reviews, but for simplicity reloading whole page data or updating state manually
-        const updatedReviewsRes = await fetch(`http://localhost:5000/api/reviews/recipe/${id}`);
+        const updatedReviewsRes = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/recipe/${id}`);
         if (updatedReviewsRes.ok) setReviewsData(await updatedReviewsRes.json());
         setActiveReplyId(null);
         setReplyText('');

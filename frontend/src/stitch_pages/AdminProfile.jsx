@@ -16,7 +16,7 @@ export default function AdminProfile() {
     const data = new FormData();
     data.append('image', file);
     try {
-      const res = await fetch('http://localhost:5000/api/upload', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: data
@@ -32,7 +32,7 @@ export default function AdminProfile() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/admin/profile', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(formData)

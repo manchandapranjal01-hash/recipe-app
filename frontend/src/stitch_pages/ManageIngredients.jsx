@@ -10,7 +10,7 @@ export default function ManageIngredients() {
 
   const fetchIngredients = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/ingredients', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/ingredients`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -29,7 +29,7 @@ export default function ManageIngredients() {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this ingredient?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/ingredients/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/ingredients/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -39,7 +39,7 @@ export default function ManageIngredients() {
 
   const handleApprove = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/ingredients/${id}/approve`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/ingredients/${id}/approve`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -52,7 +52,7 @@ export default function ManageIngredients() {
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/admin/ingredients', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/ingredients`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(formData)

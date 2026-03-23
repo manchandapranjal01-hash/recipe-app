@@ -33,7 +33,7 @@ export default function GroceryFinder() {
   useEffect(() => {
     const fetchIngredients = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/recipes/ingredients');
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/ingredients`);
         const data = await res.json();
         setIngredients(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -60,7 +60,7 @@ export default function GroceryFinder() {
     if (selectedIds.length === 0) return;
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/stores/compare-prices', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stores/compare-prices`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ingredientIds: selectedIds })

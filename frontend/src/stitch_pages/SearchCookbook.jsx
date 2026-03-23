@@ -12,7 +12,7 @@ export default function SearchCookbook() {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/recipes');
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes`);
         if (res.ok) {
           const data = await res.json();
           setRecipes(Array.isArray(data) ? data : []);

@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (token) {
-            fetch('http://localhost:5000/api/auth/me', {
+            fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
                 .then(res => res.json())
