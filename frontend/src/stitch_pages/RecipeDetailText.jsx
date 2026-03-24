@@ -167,17 +167,17 @@ export default function RecipeDetailText() {
 
           <div className="flex items-center justify-between p-6 bg-[#1a1a1a] rounded-3xl border border-[#ffffff0a]">
             <div className="text-center flex-1 border-r border-[#ffffff0a]">
-              <span className="material-symbols-outlined text-gray-500 mb-2 block text-3xl">schedule</span>
+              <span className="material-symbols-outlined f-style text-gray-500 mb-2 block text-3xl">schedule</span>
               <p className="text-white font-bold text-lg">{recipe.prep_time}m</p>
               <p className="text-gray-500 text-xs uppercase tracking-wider font-bold">Prep</p>
             </div>
             <div className="text-center flex-1 border-r border-[#ffffff0a]">
-              <span className="material-symbols-outlined text-orange-500 mb-2 block text-3xl">local_fire_department</span>
+              <span className="material-symbols-outlined f-style text-orange-500 mb-2 block text-3xl">local_fire_department</span>
               <p className="text-white font-bold text-lg">{recipe.difficulty}</p>
               <p className="text-gray-500 text-xs uppercase tracking-wider font-bold">Difficulty</p>
             </div>
             <div className="text-center flex-1">
-              <span className="material-symbols-outlined text-blue-500 mb-2 block text-3xl">restaurant_menu</span>
+              <span className="material-symbols-outlined f-style text-blue-500 mb-2 block text-3xl">restaurant_menu</span>
               <p className="text-white font-bold text-lg">{recipe.servings}</p>
               <p className="text-gray-500 text-xs uppercase tracking-wider font-bold">Servings</p>
             </div>
