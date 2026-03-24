@@ -151,7 +151,7 @@ export default function AdminLogin() {
       </main>
 
       <footer className="bg-[#0e0e0e] border-t border-[#91f78e]/10 flex flex-col md:flex-row justify-between items-center w-full px-8 py-6 gap-4">
-        <span className="font-['Inter'] text-xs text-[#adaaaa]">© 2024 The Edible Editorial. Secure Admin Portal.</span>
+        <span className="font-['Inter'] text-xs text-[#adaaaa]">© 2026 The Edible Editorial. Secure Admin Portal.</span>
         <div className="flex gap-6">
           <a className="font-['Inter'] text-xs text-[#adaaaa] hover:text-[#91f78e] transition-colors" href="#">Privacy Policy</a>
           <a className="font-['Inter'] text-xs text-[#adaaaa] hover:text-[#91f78e] transition-colors" href="#">Security Protocol</a>
