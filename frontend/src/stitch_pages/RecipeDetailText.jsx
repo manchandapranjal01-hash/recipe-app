@@ -109,30 +109,53 @@ export default function RecipeDetailText() {
         <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 max-w-4xl mx-auto">
           <span className="px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider bg-[#91f78e] text-black mb-4 inline-block">{recipe.category}</span>
           <h1 className="text-4xl md:text-6xl font-black text-white font-['Plus_Jakarta_Sans'] leading-tight drop-shadow-lg">{recipe.title}</h1>
-          <div className="flex items-center gap-6 mt-6">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full border-2 border-[#ffffff0a] overflow-hidden bg-gray-800">
-                <span className="material-symbols-outlined text-gray-400 w-full h-full flex items-center justify-center">person</span>
+            <div className="flex flex-wrap items-center justify-between gap-y-4 gap-x-6 mt-6 w-full">
+              {/* Left Group: Chef & Bookmark */}
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+                {/* Chef Info */}
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-full border-2 border-[#ffffff0a] overflow-hidden bg-gray-800 flex-shrink-0">
+                    <span className="material-symbols-outlined text-gray-400 w-full h-full flex items-center justify-center">person</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-white text-sm font-bold truncate max-w-[100px] sm:max-w-none">
+                      {recipe.author_name || 'Chef'}
+                    </span>
+                    <span className="text-gray-400 text-[10px] sm:text-xs">
+                      Origin: {recipe.cultural_origin || 'Unknown'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Bookmark Button */}
+                <button 
+                  onClick={handleBookmark} 
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all flex-shrink-0 ${
+                    isBookmarked 
+                      ? 'bg-[#ff9800]/20 text-[#ff9800] border-[#ff9800]/50' 
+                      : 'bg-[#1a1a1a]/60 backdrop-blur text-white border-[#ffffff0a] hover:bg-[#2a2a2a]'
+                  }`}
+                >
+                  <span className={`material-symbols-outlined text-[20px] ${isBookmarked ? 'font-black' : ''}`}>
+                    bookmark
+                  </span>
+                  <span className="font-bold text-sm">{isBookmarked ? 'Saved' : 'Bookmark'}</span>
+                </button>
               </div>
-              <div className="flex flex-col">
-                <span className="text-white text-sm font-bold">{recipe.author_name || 'Chef'}</span>
-                <span className="text-gray-400 text-xs">Origin: {recipe.cultural_origin || 'Unknown'}</span>
-              </div>
+
+              {/* Right Group: Ratings (Auto-shifts below on mobile if no space) */}
+              {reviewsData.avg_rating && (
+                <div className="flex items-center gap-2 min-w-fit">
+                  <span className="material-symbols-outlined text-[#ff9800]">star</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-white font-bold text-xl leading-none">{reviewsData.avg_rating}</span>
+                    <span className="text-gray-400 text-[10px] sm:text-sm leading-none">
+                      ({reviewsData.total_reviews} reviews)
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
-
-            <button onClick={handleBookmark} className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all ${isBookmarked ? 'bg-[#ff9800]/20 text-[#ff9800] border-[#ff9800]/50' : 'bg-[#1a1a1a]/60 backdrop-blur text-white border-[#ffffff0a] hover:bg-[#2a2a2a]'}`}>
-              <span className={`material-symbols-outlined ${isBookmarked ? 'font-black' : ''}`}>bookmark</span>
-              <span className="font-bold text-sm">{isBookmarked ? 'Saved' : 'Bookmark'}</span>
-            </button>
-
-            {reviewsData.avg_rating && (
-              <div className="flex items-center gap-2 ml-auto">
-                <span className="material-symbols-outlined text-[#ff9800]">star</span>
-                <span className="text-white font-bold text-xl">{reviewsData.avg_rating}</span>
-                <span className="text-gray-400 text-sm">({reviewsData.total_reviews} reviews)</span>
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
