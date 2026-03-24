@@ -175,7 +175,7 @@ export default function GroceryFinder() {
           {storeResults.length === 0 && !loading && (
             <div className="bg-[#1a1a1a] rounded-[2rem] p-12 border border-[#ffffff0a] text-center flex flex-col items-center justify-center h-full min-h-[400px]">
               <div className="w-24 h-24 bg-[#2a2a2a] rounded-full flex flex-shrink-0 items-center justify-center mb-6">
-                <span className="material-symbols-outlined text-gray-500 text-5xl">storedoor</span>
+                <span className="material-symbols-outlined text-gray-500 text-5xl">storefront</span>
               </div>
               <h3 className="text-2xl font-bold font-['Plus_Jakarta_Sans'] text-white mb-2">Find the Best Deals</h3>
               <p className="text-gray-400 max-w-sm">Build your shopping list on the left and discover which local stores have what you need at the lowest prices.</p>
