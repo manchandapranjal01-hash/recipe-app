@@ -114,7 +114,7 @@ export default function ManageIngredients() {
         </form>
       )}
 
-      <div className="bg-[#1a1a1a] rounded-2xl border border-[#ffffff0a] overflow-hidden">
+      <div className="bg-[#1a1a1a] rounded-2xl border border-[#ffffff0a] overflow-hidden overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-[#ffffff0a] bg-[#1a1a1a]/50 text-gray-400 text-xs uppercase tracking-wider">
