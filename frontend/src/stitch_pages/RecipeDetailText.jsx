@@ -188,12 +188,19 @@ export default function RecipeDetailText() {
               <span className="material-symbols-outlined text-[#91f78e]">menu_book</span> Instructions
             </h3>
             <div className="space-y-6">
-              {recipe.instructions?.split('\\n').map((step, i) => (
-                <div key={i} className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-[#1a1a1a] text-[#91f78e] font-bold flex items-center justify-center shrink-0 border border-[#ffffff0a] shadow-inner">{i + 1}</div>
-                  <p className="text-gray-300 leading-relaxed pt-1">{step.replace(/^Step \d+:\s*/, '')}</p>
-                </div>
-              ))}
+              {recipe.instructions
+                // Split by "Step X:" or "Step X :" or standard newlines
+                ?.split(/(?:Step\s*\d+\s*:\s*|\\n|\n)/g)
+                // Filter out any empty strings resulting from the split
+                .filter(step => step.trim().length > 0)
+                .map((step, i) => (
+                  <div key={i} className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-[#1a1a1a] text-[#91f78e] font-bold flex items-center justify-center shrink-0 border border-[#ffffff0a] shadow-inner">
+                      {i + 1}
+                    </div>
+                    <p className="text-gray-300 leading-relaxed pt-1">{step.trim()}</p>
+                  </div>
+                ))}
             </div>
           </div>
 
