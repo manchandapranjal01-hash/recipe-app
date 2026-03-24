@@ -115,7 +115,7 @@ export default function RecipeDetailText() {
                 {/* Chef Info */}
                 <div className="flex items-center gap-2">
                   <div className="flex w-10 h-10 rounded-full border-2 border-[#ffffff0a] overflow-hidden bg-gray-800 flex-shrink-0">
-                    <span className="material-symbols-outlined text-gray-400 w-full h-full flex items-center justify-center">person</span>
+                    <span className="flex material-symbols-outlined text-gray-400 w-full h-full flex items-center justify-center">person</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-white text-sm font-bold truncate max-w-[100px] sm:max-w-none">
