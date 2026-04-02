@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -161,6 +162,9 @@ export default function ManageGroceryStores() {
                 </td>
                 <td className="px-6 py-4 text-gray-400">{store.mobile || 'N/A'}</td>
                 <td className="px-6 py-4 text-right">
+                  <Link to={`/admin/stores/${store.id}/inventory`} className="p-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 transition-colors inline-block mr-2" title="Manage Prices">
+                    <span className="material-symbols-outlined text-xl">inventory_2</span>
+                  </Link>
                   <button onClick={() => handleDelete(store.id)} className="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors" title="Delete">
                     <span className="material-symbols-outlined text-xl">delete</span>
                   </button>

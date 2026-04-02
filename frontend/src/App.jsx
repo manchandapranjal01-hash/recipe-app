@@ -25,6 +25,8 @@ import ManageRecipes from './stitch_pages/ManageRecipes';
 import ManageGroceryStores from './stitch_pages/ManageGroceryStores';
 import UserDetails from './stitch_pages/UserDetails';
 import AdminProfile from './stitch_pages/AdminProfile';
+import AdminStoreInventory from './stitch_pages/AdminStoreInventory';
+import AdminCompetitivePrices from './stitch_pages/AdminCompetitivePrices';
 
 function App() {
   return (
@@ -56,6 +58,8 @@ function App() {
             <Route path="recipes" element={<ManageRecipes />} />
             <Route path="ingredients" element={<ManageIngredients />} />
             <Route path="stores" element={<ManageGroceryStores />} />
+            <Route path="stores/:id/inventory" element={<AdminStoreInventory />} />
+            <Route path="competitive-prices" element={<AdminCompetitivePrices />} />
             <Route path="users" element={<UserDetails />} />
             <Route path="profile" element={<AdminProfile />} />
           </Route>

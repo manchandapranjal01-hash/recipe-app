@@ -7,6 +7,7 @@ const NAV_ITEMS = [
     { path: '/admin/recipes', icon: 'menu_book', label: 'Recipes' },
     { path: '/admin/ingredients', icon: 'nutrition', label: 'Ingredients' },
     { path: '/admin/stores', icon: 'store', label: 'Stores' },
+    { path: '/admin/competitive-prices', icon: 'query_stats', label: 'Prices' },
     { path: '/admin/users', icon: 'group', label: 'Users' },
     { path: '/admin/profile', icon: 'settings', label: 'Settings' },
 ];
