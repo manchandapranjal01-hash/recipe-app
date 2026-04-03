@@ -161,7 +161,7 @@ export default function ManageGroceryStores() {
                   <div className="text-xs text-gray-500 max-w-[200px] truncate">{store.address}</div>
                 </td>
                 <td className="px-6 py-4 text-gray-400">{store.mobile || 'N/A'}</td>
-                <td className="px-6 py-4 text-right">
+                <td className="px-6 py-4 flex justify-end ">
                   <Link to={`/admin/stores/${store.id}/inventory`} className="p-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 transition-colors inline-block mr-2" title="Manage Prices">
                     <span className="material-symbols-outlined text-xl">inventory_2</span>
                   </Link>
