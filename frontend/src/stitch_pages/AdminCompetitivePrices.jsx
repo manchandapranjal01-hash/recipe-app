@@ -63,16 +63,22 @@ export default function AdminCompetitivePrices() {
 
       <div className="bg-[#1a1a1a] rounded-2xl p-6 border border-[#ffffff0a] mb-8">
         <label className="block text-gray-400 text-xs uppercase tracking-wider mb-2">Select an Ingredient to Analyze</label>
-        <select
-          value={selectedIngredient}
-          onChange={handleIngredientChange}
-          className="w-full md:w-1/2 bg-[#2a2a2a] border border-[#ffffff0a] rounded-xl px-4 py-3 pr-8 text-gray-200 focus:outline-none"
-        >
-          <option value="">-- Select Ingredient --</option>
-          {ingredients.map(ing => (
-            <option key={ing.id} value={ing.id}>{ing.name} ({ing.unit})</option>
-          ))}
-        </select>
+          <select
+            value={selectedIngredient}
+            onChange={handleIngredientChange}
+            className="w-full md:w-1/2 bg-[#2a2a2a] border border-[#ffffff0a] rounded-xl px-4 py-3 pr-10 text-gray-200 focus:outline-none appearance-none"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'right 1rem center',
+              backgroundSize: '1.5em'
+            }}
+          >
+            <option value="">-- Select Ingredient --</option>
+            {ingredients.map(ing => (
+              <option key={ing.id} value={ing.id}>{ing.name} ({ing.unit})</option>
+            ))}
+          </select>
       </div>
 
       {selectedIngredient && (
