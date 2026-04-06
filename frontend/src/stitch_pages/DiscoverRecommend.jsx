@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useKitchen } from '../context/KitchenContext';
 
 export default function DiscoverRecommend() {
+    const { pantry, addToPantry, removeFromPantry } = useKitchen();
     const [ingredients, setIngredients] = useState([]);
-    const [selectedIds, setSelectedIds] = useState([]);
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    // Map pantry to an array of ingredient IDs for the backend
+    const pantryIds = pantry.map(item => item.id);
 
     useEffect(() => {
         const fetchIngredients = async () => {
@@ -19,18 +23,29 @@ export default function DiscoverRecommend() {
             }
         };
         fetchIngredients();
-        getSuggestions([]); // Load initial "default/recent" recommendations
     }, []);
 
-    const toggleIngredient = (id) => {
-        setSelectedIds(prev =>
-            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-        );
+    // Get suggestions automatically when pantry changes
+    useEffect(() => {
+        if (pantryIds.length > 0) {
+            getSuggestions(pantryIds);
+        } else {
+            // Load default if empty initially
+            getSuggestions([]);
+        }
+    }, [pantryIds.join(',')]);
+
+    const toggleIngredient = (ing) => {
+        const inPantry = pantry.some(i => i.id === ing.id);
+        if (inPantry) {
+            removeFromPantry(ing.id);
+        } else {
+            addToPantry({ id: ing.id, name: ing.name, quantity: 1, unit: ing.unit || 'unit' });
+        }
     };
 
-    const getSuggestions = async (ingredientsOverride = null) => {
+    const getSuggestions = async (idsToUse = []) => {
         setLoading(true);
-        const idsToUse = ingredientsOverride !== null ? ingredientsOverride : selectedIds;
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/recommendations`, {
                 method: 'POST',
@@ -61,28 +76,33 @@ export default function DiscoverRecommend() {
             </header>
 
             <main className="flex-1 px-4 md:px-6 pt-6 pb-24 max-w-4xl mx-auto w-full">
-                <div className="mb-8">
-                    <h2 className="text-3xl font-black font-['Plus_Jakarta_Sans'] text-white">What's in your pantry?</h2>
-                    <p className="text-gray-400 mt-2 text-sm">Select ingredients you have, and we'll magically find recipes for you.</p>
+                <div className="mb-8 flex justify-between items-center">
+                    <div>
+                        <h2 className="text-3xl font-black font-['Plus_Jakarta_Sans'] text-white">What's in your pantry?</h2>
+                        <p className="text-gray-400 mt-2 text-sm">Select ingredients you have, and we'll magically find recipes for you.</p>
+                    </div>
                 </div>
 
                 <div className="bg-[#1a1a1a] rounded-3xl p-6 mb-8 border border-[#ffffff0a] shadow-xl">
-                    <div className="flex flex-wrap gap-3 mb-6">
-                        {ingredients.map(ing => (
-                            <button
-                                key={ing.id}
-                                onClick={() => toggleIngredient(ing.id)}
-                                className={`px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border ${selectedIds.includes(ing.id)
-                                        ? 'bg-[#91f78e]/20 text-[#91f78e] border-[#91f78e]/50 shadow-[0_0_15px_rgba(145,247,142,0.2)]'
-                                        : 'bg-[#2a2a2a] text-gray-400 border-transparent hover:bg-[#333] hover:text-gray-200'
-                                    }`}
-                            >
-                                {ing.name}
-                            </button>
-                        ))}
+                    <div className="flex flex-wrap gap-3 mb-6 max-h-64 overflow-y-auto custom-scrollbar pr-2">
+                        {ingredients.map(ing => {
+                            const isSelected = pantryIds.includes(ing.id);
+                            return (
+                                <button
+                                    key={ing.id}
+                                    onClick={() => toggleIngredient(ing)}
+                                    className={`px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 border ${isSelected
+                                            ? 'bg-[#91f78e]/20 text-[#91f78e] border-[#91f78e]/50 shadow-[0_0_15px_rgba(145,247,142,0.2)]'
+                                            : 'bg-[#2a2a2a] text-gray-400 border-transparent hover:bg-[#333] hover:text-gray-200'
+                                        }`}
+                                >
+                                    {ing.name} {isSelected ? '✓' : ''}
+                                </button>
+                            );
+                        })}
                     </div>
                     <button
-                        onClick={() => getSuggestions(selectedIds)}
+                        onClick={() => getSuggestions(pantryIds)}
                         disabled={loading}
                         className="w-full bg-gradient-to-r from-[#91f78e] to-[#6bc46a] text-[#0e0e0e] font-black text-lg py-4 rounded-2xl shadow-[0_0_20px_rgba(145,247,142,0.3)] hover:shadow-[0_0_30px_rgba(145,247,142,0.5)] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
                     >

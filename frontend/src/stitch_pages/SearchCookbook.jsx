@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useKitchen } from '../context/KitchenContext';
 
 export default function SearchCookbook() {
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState('All Recipes');
+  const { activeFilters } = useKitchen();
   const navigate = useNavigate();
 
   const filters = ['All Recipes', 'Vegetarian', 'Non-Veg', 'Snacks', 'Dessert', 'Drinks'];
@@ -26,8 +28,18 @@ export default function SearchCookbook() {
 
   const filtered = recipes.filter(r => {
     const matchesSearch = r.title?.toLowerCase().includes(search.toLowerCase()) || r.description?.toLowerCase().includes(search.toLowerCase());
-    const matchesFilter = activeFilter === 'All Recipes' || r.category === activeFilter;
-    return matchesSearch && matchesFilter;
+    const matchesLocalFilter = activeFilter === 'All Recipes' || r.category === activeFilter;
+    
+    // Strict global allergy/dietary logic (Mock)
+    const matchesGlobalFilters = activeFilters.length === 0 || activeFilters.every(f => {
+      const tag = f.toLowerCase();
+      // For mock purposes, we assume dietary tags are present in title, category, or description
+      return r.category?.toLowerCase() === tag || 
+             r.title?.toLowerCase().includes(tag) || 
+             r.description?.toLowerCase().includes(tag);
+    });
+
+    return matchesSearch && matchesLocalFilter && matchesGlobalFilters;
   });
 
   return (

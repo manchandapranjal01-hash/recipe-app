@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import NutritionPanel from '../components/NutritionPanel';
 
 export default function RecipeDetailText() {
   const { id } = useParams();
@@ -312,30 +313,8 @@ export default function RecipeDetailText() {
             </button>
           </div>
 
-          {nutrition && Object.keys(nutrition).length > 0 && (
-            <div className="bg-[#1a1a1a] rounded-3xl p-6 border border-[#ffffff0a] shadow-lg">
-              <h3 className="text-xl font-bold text-white mb-6 font-['Plus_Jakarta_Sans'] flex items-center gap-2">
-                <span className="material-symbols-outlined text-blue-500 text-[22px]">monitor_weight</span> Nutrition
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-[#2a2a2a] p-3 rounded-xl border border-[#ffffff0a]">
-                  <p className="text-gray-500 text-[10px] uppercase font-bold tracking-wider mb-1">Calories</p>
-                  <p className="text-white font-black text-lg">{nutrition.calories || '-'}</p>
-                </div>
-                <div className="bg-[#2a2a2a] p-3 rounded-xl border border-[#ffffff0a]">
-                  <p className="text-gray-500 text-[10px] uppercase font-bold tracking-wider mb-1">Protein</p>
-                  <p className="text-white font-black text-lg">{nutrition.protein || '-'}</p>
-                </div>
-                <div className="bg-[#2a2a2a] p-3 rounded-xl border border-[#ffffff0a]">
-                  <p className="text-gray-500 text-[10px] uppercase font-bold tracking-wider mb-1">Carbs</p>
-                  <p className="text-white font-black text-lg">{nutrition.carbs || '-'}</p>
-                </div>
-                <div className="bg-[#2a2a2a] p-3 rounded-xl border border-[#ffffff0a]">
-                  <p className="text-gray-500 text-[10px] uppercase font-bold tracking-wider mb-1">Fats</p>
-                  <p className="text-white font-black text-lg">{nutrition.fats || '-'}</p>
-                </div>
-              </div>
-            </div>
+          {recipe.ingredients && recipe.ingredients.length > 0 && (
+            <NutritionPanel ingredients={recipe.ingredients} />
           )}
         </div>
       </div>

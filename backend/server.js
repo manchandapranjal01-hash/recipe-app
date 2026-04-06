@@ -11,6 +11,8 @@ import reviewRoutes from './routes/reviews.js';
 import storeRoutes from './routes/stores.js';
 import uploadRoutes from './routes/upload.js';
 import ingredientsRoutes from './routes/ingredients.js';
+import pricesRoutes from './routes/prices.js';
+import nutritionRoutes from './routes/nutrition.js';
 
 dotenv.config();
 
@@ -35,6 +37,14 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/stores', storeRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/ingredients', ingredientsRoutes);
+app.use('/api/prices', pricesRoutes);
+app.use('/api/recipes/nutrition', nutritionRoutes);
+
+// Mock sync endpoint
+app.post('/api/sync', (req, res) => {
+    console.log("Received offline sync data:", req.body);
+    res.json({ success: true, message: "State synced successfully." });
+});
 
 const PORT = process.env.PORT || 5000;
 
