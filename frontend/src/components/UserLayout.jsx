@@ -5,8 +5,8 @@ import { AuthContext } from '../context/AuthContext';
 const NAV_ITEMS = [
     { path: '/discoverrecommend', icon: 'home', label: 'Home' },
     { path: '/searchcookbook', icon: 'menu_book', label: 'Cookbook' },
-    { path: '/kitchen', icon: 'kitchen', label: 'Kitchen', special: true },
-    { path: '/grocery-run', icon: 'route', label: 'Shop' },
+    { path: '/addnewrecipe', icon: 'add_circle', label: 'Create', special: true },
+    { path: '/groceryfinder', icon: 'store', label: 'Stores' },
     { path: '/userprofile', icon: 'person', label: 'Profile' },
 ];
 
