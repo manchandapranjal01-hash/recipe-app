@@ -1,6 +1,6 @@
 import express from 'express';
 
-const router = express.express.Router ? express.Router() : express.Router();
+const router = express.Router();
 
 // Mock Price Data (INR)
 const MOCK_PRICES = [

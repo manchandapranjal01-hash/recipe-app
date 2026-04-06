@@ -1,6 +1,6 @@
 import express from 'express';
 
-const router = express.express.Router ? express.Router() : express.Router();
+const router = express.Router();
 
 router.post('/analyze', (req, res) => {
   const { ingredients } = req.body;
